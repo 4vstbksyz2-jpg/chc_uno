@@ -1,0 +1,76 @@
+{
+  "npz": "test.npz",
+  "results_dir": "Results",
+  "run_name": "uno_ch",
+  "solver_dt": 0.01,
+  "gap": 10,
+  "off_values": [
+    -0.4,
+    -0.2,
+    0.0,
+    0.2,
+    0.4
+  ],
+  "train_off": null,
+  "t_min": 35.0,
+  "dt_min": 1.0,
+  "dt_max": 50.0,
+  "in_ram": true,
+  "data_on_gpu": true,
+  "width": 40,
+  "modes": 20,
+  "levels": 3,
+  "cond_dim": 64,
+  "conserve_mass": false,
+  "epochs": 60,
+  "steps_per_epoch": 200,
+  "batch": 128,
+  "lr": 0.003,
+  "lr_min": 1e-05,
+  "unroll_stages": [
+    [
+      0.0,
+      1
+    ],
+    [
+      0.08,
+      2
+    ],
+    [
+      0.19,
+      4
+    ]
+  ],
+  "stage_lr_mult": 0.65,
+  "grad_steps": 4,
+  "weight_decay": 0.0001,
+  "grad_clip": 1.0,
+  "ema_decay": 0.999,
+  "noise": 0.015,
+  "w_inc": 0.25,
+  "w_grad": 0.25,
+  "seed": 0,
+  "val_seeds": [
+    31337,
+    24601,
+    8675309,
+    20250,
+    42424,
+    90210,
+    23571,
+    55555,
+    48151,
+    62831
+  ],
+  "val_l": 128,
+  "val_t0": 100.0,
+  "val_t1": 2000.0,
+  "val_alpha": 0.2,
+  "val_dt_max": 40.0,
+  "val_save_every": 4.0,
+  "val_threshold": 0.8,
+  "val_every": 2,
+  "patience": 0,
+  "min_delta": 0.0001,
+  "resume": true
+}

@@ -1,0 +1,803 @@
+==============================================================================
+ UNO / Cahn-Hilliard -- PREDICTION   2026-08-23 13:17:13
+==============================================================================
+[setup] NVIDIA A100-SXM4-40GB, 42.4 GB, torch 2.13.0+cu126
+[setup] device=cuda precision=fp32 dtype=torch.float32
+[model] uno_ch_best.pt  17,901,252 parameters  arch={'width': 40, 'modes': 20, 'n_ref': 64, 'levels': 3, 'cond_dim': 64, 'conserve_mass': True}
+[model] training metrics: {'rollout': 0.8890513632297515, 'survives': 1648.8, 'per_seed': [1248.0, 1448.0, 1648.0, 2000.0, 2000.0, 1048.0, 1568.0, 2000.0, 2000.0, 1528.0], 'epoch': 18, 'val1': 0.0010694553469268915}
+[eval] offs=[-0.4, -0.2, 0.0, 0.2, 0.4]  10 test seeds=[99999, 54321, 77777, 31415, 27182, 61803, 41421, 57721, 66260, 86420]
+
+[tuning] stride schedule for psi0 = -0.4 on 10 validation seed(s) [31337, 24601, 8675309, 20250, 42424, 90210, 23571, 55555, 48151, 62831] (held out of the reported test set)
+[tuning] score = mean R2 at t = 500, 1000, 1500, 2000; a fixed grid, so schedules of different length stay comparable
+[data] ground truth cached: gt_l128_off-0.4_seed31337_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed24601_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed8675309_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed20250_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed42424_t100-2000_ev4.npz
+[data] solving ground truth l=128 off=-0.4 seed=90210 to t=2000 ...
+[data]   -> gt_l128_off-0.4_seed90210_t100-2000_ev4.npz (476, 128, 128) (42s)
+[data] solving ground truth l=128 off=-0.4 seed=23571 to t=2000 ...
+[data]   -> gt_l128_off-0.4_seed23571_t100-2000_ev4.npz (476, 128, 128) (43s)
+[data] solving ground truth l=128 off=-0.4 seed=55555 to t=2000 ...
+[data]   -> gt_l128_off-0.4_seed55555_t100-2000_ev4.npz (476, 128, 128) (42s)
+[data] solving ground truth l=128 off=-0.4 seed=48151 to t=2000 ...
+[data]   -> gt_l128_off-0.4_seed48151_t100-2000_ev4.npz (476, 128, 128) (42s)
+[data] solving ground truth l=128 off=-0.4 seed=62831 to t=2000 ...
+[data]   -> gt_l128_off-0.4_seed62831_t100-2000_ev4.npz (476, 128, 128) (42s)
+    alpha  dt_max  steps     score   R2(500)  R2(1000)  R2(1500)  R2(2000)
+    0.100    30.0     67    0.8607    0.9643    0.8862    0.8312    0.7610
+    0.100    40.0     58    0.8610    0.9644    0.8854    0.8292    0.7649
+    0.100    45.0     55    0.8618    0.9643    0.8854    0.8297    0.7680
+    0.100    50.0     51    0.8618    0.9643    0.8853    0.8287    0.7690
+    0.200    30.0     64    0.8574    0.9644    0.8857    0.8257    0.7538
+    0.200    40.0     52    0.8602    0.9642    0.8852    0.8272    0.7642
+    0.200    45.0     48    0.8607    0.9641    0.8847    0.8278    0.7661
+    0.200    50.0     45    0.8617    0.9641    0.8853    0.8277    0.7696
+    0.350    30.0     63    0.8551    0.9624    0.8821    0.8228    0.7532
+    0.350    40.0     51    0.8566    0.9610    0.8816    0.8245    0.7593
+    0.350    45.0     46    0.8623    0.9602    0.8837    0.8316    0.7737
+    0.350    50.0     42    0.8628    0.9602    0.8827    0.8323    0.7758
+    0.500    30.0     63    0.8551    0.9624    0.8821    0.8228    0.7532
+    0.500    40.0     49    0.8618    0.9603    0.8831    0.8310    0.7728
+    0.500    45.0     47    0.8612    0.9595    0.8819    0.8307    0.7725
+    0.500    50.0     43    0.8610    0.9598    0.8817    0.8290    0.7734
+    0.700    30.0     63    0.8551    0.9624    0.8821    0.8228    0.7532
+    0.700    40.0     49    0.8618    0.9603    0.8831    0.8310    0.7728
+    0.700    45.0     47    0.8612    0.9595    0.8819    0.8307    0.7725
+    0.700    50.0     43    0.8610    0.9598    0.8817    0.8290    0.7734
+  best: alpha=0.35, dt_max=50 (42 steps) -> score 0.8628
+  [warn] dt_max sits at the top of the grid. Longer strides keep winning because they compound the per-step bias fewer times; do not widen the grid beyond the dt_max the model trained on or the step itself becomes an extrapolation.
+
+[rollout] off-critical quench off=-0.4, full horizon t=100 -> 2000
+[data] ground truth cached: gt_l128_off-0.4_seed99999_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed54321_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed77777_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed31415_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed27182_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed61803_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed41421_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed57721_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed66260_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed86420_t100-2000_ev4.npz
+  seed 99999: 41 steps to t=2000, final R2=0.6953, mean R2=0.8681, R2 >= 0.80 until t=1624
+  seed 54321: 41 steps to t=2000, final R2=0.7660, mean R2=0.8725, R2 >= 0.80 until t=1480
+  seed 77777: 41 steps to t=2000, final R2=0.6935, mean R2=0.8194, R2 >= 0.80 until t=904
+  seed 31415: 41 steps to t=2000, final R2=0.7451, mean R2=0.8929, R2 >= 0.80 until t=1672
+  seed 27182: 41 steps to t=2000, final R2=0.7740, mean R2=0.8740, R2 >= 0.80 until t=1864
+  seed 61803: 41 steps to t=2000, final R2=0.7468, mean R2=0.8515, R2 >= 0.80 until t=1048
+  seed 41421: 41 steps to t=2000, final R2=0.8160, mean R2=0.9144, R2 >= 0.80 until the whole rollout
+  seed 57721: 41 steps to t=2000, final R2=0.5403, mean R2=0.7810, R2 >= 0.80 until t=952
+  seed 66260: 41 steps to t=2000, final R2=0.8295, mean R2=0.9111, R2 >= 0.80 until the whole rollout
+  seed 86420: 41 steps to t=2000, final R2=0.6889, mean R2=0.8776, R2 >= 0.80 until t=1576
+  MEAN over 10 seeds: final R2=0.7295 +/- 0.0825, mean of all R2=0.8662 +/- 0.0407
+  survives to t = 1512 +/- 414; 2/10 never dropped below 0.80; mean curve crosses at t=1528
+  rollout wall time 0.45s for 10 seeds (41 steps each)
+  physics: {'n_truth': 0.2601629330598056, 'n_pred': 0.2917247293065204, 'free_energy_monotone': True, 'L_truth_final': 21.90374331550802, 'L_pred_final': 24.12960235640648}
+  wrote uno_ch_off-0.4_rollout_evaluation.png, uno_ch_off-0.4_phase_ordering_kinetics.png
+
+[tuning] stride schedule for psi0 = -0.2 on 10 validation seed(s) [31337, 24601, 8675309, 20250, 42424, 90210, 23571, 55555, 48151, 62831] (held out of the reported test set)
+[tuning] score = mean R2 at t = 500, 1000, 1500, 2000; a fixed grid, so schedules of different length stay comparable
+[data] ground truth cached: gt_l128_off-0.2_seed31337_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed24601_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed8675309_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed20250_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed42424_t100-2000_ev4.npz
+[data] solving ground truth l=128 off=-0.2 seed=90210 to t=2000 ...
+[data]   -> gt_l128_off-0.2_seed90210_t100-2000_ev4.npz (476, 128, 128) (40s)
+[data] solving ground truth l=128 off=-0.2 seed=23571 to t=2000 ...
+[data]   -> gt_l128_off-0.2_seed23571_t100-2000_ev4.npz (476, 128, 128) (40s)
+[data] solving ground truth l=128 off=-0.2 seed=55555 to t=2000 ...
+[data]   -> gt_l128_off-0.2_seed55555_t100-2000_ev4.npz (476, 128, 128) (41s)
+[data] solving ground truth l=128 off=-0.2 seed=48151 to t=2000 ...
+[data]   -> gt_l128_off-0.2_seed48151_t100-2000_ev4.npz (476, 128, 128) (41s)
+[data] solving ground truth l=128 off=-0.2 seed=62831 to t=2000 ...
+[data]   -> gt_l128_off-0.2_seed62831_t100-2000_ev4.npz (476, 128, 128) (40s)
+    alpha  dt_max  steps     score   R2(500)  R2(1000)  R2(1500)  R2(2000)
+    0.100    30.0     67    0.8679    0.9628    0.9043    0.8413    0.7631
+    0.100    40.0     58    0.8698    0.9628    0.9045    0.8434    0.7687
+    0.100    45.0     55    0.8716    0.9627    0.9052    0.8455    0.7731
+    0.100    50.0     51    0.8722    0.9627    0.9064    0.8475    0.7724
+    0.200    30.0     64    0.8720    0.9624    0.9082    0.8470    0.7706
+    0.200    40.0     52    0.8739    0.9621    0.9076    0.8486    0.7773
+    0.200    45.0     48    0.8756    0.9619    0.9084    0.8509    0.7811
+    0.200    50.0     45    0.8759    0.9621    0.9091    0.8522    0.7802
+    0.350    30.0     63    0.8692    0.9620    0.9046    0.8431    0.7671
+    0.350    40.0     51    0.8659    0.9614    0.9040    0.8368    0.7613
+    0.350    45.0     46    0.8690    0.9610    0.9027    0.8417    0.7705
+    0.350    50.0     42    0.8676    0.9612    0.9019    0.8414    0.7660
+    0.500    30.0     63    0.8692    0.9620    0.9046    0.8431    0.7671
+    0.500    40.0     49    0.8660    0.9612    0.9040    0.8368    0.7618
+    0.500    45.0     47    0.8670    0.9606    0.9026    0.8393    0.7654
+    0.500    50.0     43    0.8632    0.9605    0.9015    0.8347    0.7562
+    0.700    30.0     63    0.8692    0.9620    0.9046    0.8431    0.7671
+    0.700    40.0     49    0.8660    0.9612    0.9040    0.8368    0.7618
+    0.700    45.0     47    0.8670    0.9606    0.9026    0.8393    0.7654
+    0.700    50.0     43    0.8632    0.9605    0.9015    0.8347    0.7562
+  best: alpha=0.2, dt_max=50 (45 steps) -> score 0.8759
+  [warn] dt_max sits at the top of the grid. Longer strides keep winning because they compound the per-step bias fewer times; do not widen the grid beyond the dt_max the model trained on or the step itself becomes an extrapolation.
+
+[rollout] off-critical quench off=-0.2, full horizon t=100 -> 2000
+[data] ground truth cached: gt_l128_off-0.2_seed99999_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed54321_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed77777_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed31415_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed27182_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed61803_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed41421_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed57721_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed66260_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed86420_t100-2000_ev4.npz
+  seed 99999: 44 steps to t=2000, final R2=0.8671, mean R2=0.9397, R2 >= 0.80 until the whole rollout
+  seed 54321: 44 steps to t=2000, final R2=0.6764, mean R2=0.8473, R2 >= 0.80 until t=1448
+  seed 77777: 44 steps to t=2000, final R2=0.7657, mean R2=0.8841, R2 >= 0.80 until t=1688
+  seed 31415: 44 steps to t=2000, final R2=0.8157, mean R2=0.9012, R2 >= 0.80 until the whole rollout
+  seed 27182: 44 steps to t=2000, final R2=0.8102, mean R2=0.8988, R2 >= 0.80 until t=1496
+  seed 61803: 44 steps to t=2000, final R2=0.8573, mean R2=0.9327, R2 >= 0.80 until the whole rollout
+  seed 41421: 44 steps to t=2000, final R2=0.7161, mean R2=0.8821, R2 >= 0.80 until t=1640
+  seed 57721: 44 steps to t=2000, final R2=0.9371, mean R2=0.9500, R2 >= 0.80 until the whole rollout
+  seed 66260: 44 steps to t=2000, final R2=0.8313, mean R2=0.9326, R2 >= 0.80 until the whole rollout
+  seed 86420: 44 steps to t=2000, final R2=0.6897, mean R2=0.8390, R2 >= 0.80 until t=1112
+  MEAN over 10 seeds: final R2=0.7967 +/- 0.0840, mean of all R2=0.9007 +/- 0.0384
+  survives to t = 1738 +/- 314; 5/10 never dropped below 0.80; mean curve crosses at t=1976
+  rollout wall time 0.49s for 10 seeds (44 steps each)
+  physics: {'n_truth': 0.2561901880149104, 'n_pred': 0.25523541670324934, 'free_energy_monotone': True, 'L_truth_final': 21.586297760210805, 'L_pred_final': 21.03209242618742}
+  wrote uno_ch_off-0.2_rollout_evaluation.png, uno_ch_off-0.2_phase_ordering_kinetics.png
+
+[tuning] stride schedule for psi0 = +0.0 on 10 validation seed(s) [31337, 24601, 8675309, 20250, 42424, 90210, 23571, 55555, 48151, 62831] (held out of the reported test set)
+[tuning] score = mean R2 at t = 500, 1000, 1500, 2000; a fixed grid, so schedules of different length stay comparable
+[data] ground truth cached: gt_l128_off+0.0_seed31337_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed24601_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed8675309_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed20250_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed42424_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed90210_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed23571_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed55555_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed48151_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed62831_t100-2000_ev4.npz
+    alpha  dt_max  steps     score   R2(500)  R2(1000)  R2(1500)  R2(2000)
+    0.100    30.0     67    0.8448    0.9611    0.8982    0.8093    0.7106
+    0.100    40.0     58    0.8494    0.9611    0.8996    0.8151    0.7218
+    0.100    45.0     55    0.8521    0.9610    0.9004    0.8184    0.7286
+    0.100    50.0     51    0.8536    0.9610    0.9009    0.8200    0.7323
+    0.200    30.0     64    0.8514    0.9624    0.9053    0.8184    0.7194
+    0.200    40.0     52    0.8572    0.9628    0.9077    0.8257    0.7326
+    0.200    45.0     48    0.8603    0.9628    0.9088    0.8295    0.7398
+    0.200    50.0     45    0.8624    0.9630    0.9103    0.8319    0.7443
+    0.350    30.0     63    0.8352    0.9542    0.8902    0.7979    0.6983
+    0.350    40.0     51    0.8404    0.9505    0.8926    0.8074    0.7113
+    0.350    45.0     46    0.8434    0.9501    0.8936    0.8111    0.7188
+    0.350    50.0     42    0.8363    0.9461    0.8861    0.8017    0.7113
+    0.500    30.0     63    0.8352    0.9542    0.8902    0.7979    0.6983
+    0.500    40.0     49    0.8395    0.9486    0.8914    0.8067    0.7113
+    0.500    45.0     47    0.8331    0.9438    0.8838    0.7983    0.7064
+    0.500    50.0     43    0.8436    0.9447    0.8902    0.8117    0.7279
+    0.700    30.0     63    0.8352    0.9542    0.8902    0.7979    0.6983
+    0.700    40.0     49    0.8395    0.9486    0.8914    0.8067    0.7113
+    0.700    45.0     47    0.8331    0.9438    0.8838    0.7983    0.7064
+    0.700    50.0     43    0.8436    0.9447    0.8902    0.8117    0.7279
+  best: alpha=0.2, dt_max=50 (45 steps) -> score 0.8624
+  [warn] dt_max sits at the top of the grid. Longer strides keep winning because they compound the per-step bias fewer times; do not widen the grid beyond the dt_max the model trained on or the step itself becomes an extrapolation.
+
+[rollout] critical quench off=+0.0, full horizon t=100 -> 2000
+[data] ground truth cached: gt_l128_off+0.0_seed99999_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed54321_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed77777_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed31415_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed27182_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed61803_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed41421_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed57721_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed66260_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed86420_t100-2000_ev4.npz
+  seed 99999: 44 steps to t=2000, final R2=0.9004, mean R2=0.9550, R2 >= 0.80 until the whole rollout
+  seed 54321: 44 steps to t=2000, final R2=0.4622, mean R2=0.8038, R2 >= 0.80 until t=1208
+  seed 77777: 44 steps to t=2000, final R2=0.7991, mean R2=0.9284, R2 >= 0.80 until t=2000
+  seed 31415: 44 steps to t=2000, final R2=0.7006, mean R2=0.8722, R2 >= 0.80 until t=1496
+  seed 27182: 44 steps to t=2000, final R2=0.8679, mean R2=0.9404, R2 >= 0.80 until the whole rollout
+  seed 61803: 44 steps to t=2000, final R2=0.8373, mean R2=0.9288, R2 >= 0.80 until the whole rollout
+  seed 41421: 44 steps to t=2000, final R2=0.7754, mean R2=0.8879, R2 >= 0.80 until t=1832
+  seed 57721: 44 steps to t=2000, final R2=0.7068, mean R2=0.8908, R2 >= 0.80 until t=1592
+  seed 66260: 44 steps to t=2000, final R2=0.5883, mean R2=0.8212, R2 >= 0.80 until t=1160
+  seed 86420: 44 steps to t=2000, final R2=0.7367, mean R2=0.8918, R2 >= 0.80 until t=1640
+  MEAN over 10 seeds: final R2=0.7375 +/- 0.1329, mean of all R2=0.8920 +/- 0.0496
+  survives to t = 1693 +/- 328; 3/10 never dropped below 0.80; mean curve crosses at t=1688
+  rollout wall time 0.48s for 10 seeds (44 steps each)
+  physics: {'n_truth': 0.3082424187134384, 'n_pred': 0.3105546932052114, 'free_energy_monotone': True, 'L_truth_final': 26.130781499202552, 'L_pred_final': 26.340836012861736}
+  wrote uno_ch_rollout_evaluation.png, uno_ch_phase_ordering_kinetics.png
+
+[tuning] stride schedule for psi0 = +0.2 on 10 validation seed(s) [31337, 24601, 8675309, 20250, 42424, 90210, 23571, 55555, 48151, 62831] (held out of the reported test set)
+[tuning] score = mean R2 at t = 500, 1000, 1500, 2000; a fixed grid, so schedules of different length stay comparable
+[data] ground truth cached: gt_l128_off+0.2_seed31337_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed24601_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed8675309_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed20250_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed42424_t100-2000_ev4.npz
+[data] solving ground truth l=128 off=+0.2 seed=90210 to t=2000 ...
+[data]   -> gt_l128_off+0.2_seed90210_t100-2000_ev4.npz (476, 128, 128) (40s)
+[data] solving ground truth l=128 off=+0.2 seed=23571 to t=2000 ...
+[data]   -> gt_l128_off+0.2_seed23571_t100-2000_ev4.npz (476, 128, 128) (40s)
+[data] solving ground truth l=128 off=+0.2 seed=55555 to t=2000 ...
+[data]   -> gt_l128_off+0.2_seed55555_t100-2000_ev4.npz (476, 128, 128) (40s)
+[data] solving ground truth l=128 off=+0.2 seed=48151 to t=2000 ...
+[data]   -> gt_l128_off+0.2_seed48151_t100-2000_ev4.npz (476, 128, 128) (40s)
+[data] solving ground truth l=128 off=+0.2 seed=62831 to t=2000 ...
+[data]   -> gt_l128_off+0.2_seed62831_t100-2000_ev4.npz (476, 128, 128) (40s)
+    alpha  dt_max  steps     score   R2(500)  R2(1000)  R2(1500)  R2(2000)
+    0.100    30.0     67    0.8238    0.9442    0.8665    0.7883    0.6960
+    0.100    40.0     58    0.8273    0.9441    0.8675    0.7927    0.7051
+    0.100    45.0     55    0.8319    0.9441    0.8699    0.7981    0.7156
+    0.100    50.0     51    0.8330    0.9441    0.8703    0.7994    0.7185
+    0.200    30.0     64    0.8365    0.9485    0.8823    0.8055    0.7096
+    0.200    40.0     52    0.8462    0.9484    0.8868    0.8165    0.7330
+    0.200    45.0     48    0.8490    0.9484    0.8877    0.8200    0.7398
+    0.200    50.0     45    0.8505    0.9484    0.8885    0.8218    0.7433
+    0.350    30.0     63    0.8364    0.9484    0.8793    0.8060    0.7117
+    0.350    40.0     51    0.8576    0.9545    0.8941    0.8313    0.7505
+    0.350    45.0     46    0.8701    0.9573    0.9052    0.8456    0.7722
+    0.350    50.0     42    0.8718    0.9549    0.9045    0.8484    0.7795
+    0.500    30.0     63    0.8364    0.9484    0.8793    0.8060    0.7117
+    0.500    40.0     49    0.8603    0.9548    0.8974    0.8336    0.7553
+    0.500    45.0     47    0.8714    0.9577    0.9081    0.8460    0.7737
+    0.500    50.0     43    0.8723    0.9577    0.9088    0.8468    0.7758
+    0.700    30.0     63    0.8364    0.9484    0.8793    0.8060    0.7117
+    0.700    40.0     49    0.8603    0.9548    0.8974    0.8336    0.7553
+    0.700    45.0     47    0.8714    0.9577    0.9081    0.8460    0.7737
+    0.700    50.0     43    0.8723    0.9577    0.9088    0.8468    0.7758
+  best: alpha=0.5, dt_max=50 (43 steps) -> score 0.8723
+  [warn] dt_max sits at the top of the grid. Longer strides keep winning because they compound the per-step bias fewer times; do not widen the grid beyond the dt_max the model trained on or the step itself becomes an extrapolation.
+
+[rollout] off-critical quench off=+0.2, full horizon t=100 -> 2000
+[data] ground truth cached: gt_l128_off+0.2_seed99999_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed54321_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed77777_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed31415_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed27182_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed61803_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed41421_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed57721_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed66260_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed86420_t100-2000_ev4.npz
+  seed 99999: 42 steps to t=2000, final R2=0.7773, mean R2=0.9199, R2 >= 0.80 until t=1924
+  seed 54321: 42 steps to t=2000, final R2=0.8427, mean R2=0.9152, R2 >= 0.80 until the whole rollout
+  seed 77777: 42 steps to t=2000, final R2=0.8196, mean R2=0.9232, R2 >= 0.80 until the whole rollout
+  seed 31415: 42 steps to t=2000, final R2=0.7380, mean R2=0.8913, R2 >= 0.80 until t=1780
+  seed 27182: 42 steps to t=2000, final R2=0.7585, mean R2=0.8871, R2 >= 0.80 until t=1780
+  seed 61803: 42 steps to t=2000, final R2=0.8339, mean R2=0.8933, R2 >= 0.80 until the whole rollout
+  seed 41421: 42 steps to t=2000, final R2=0.7006, mean R2=0.8317, R2 >= 0.80 until t=1156
+  seed 57721: 42 steps to t=2000, final R2=0.6573, mean R2=0.8214, R2 >= 0.80 until t=1108
+  seed 66260: 42 steps to t=2000, final R2=0.8188, mean R2=0.9118, R2 >= 0.80 until the whole rollout
+  seed 86420: 42 steps to t=2000, final R2=0.6947, mean R2=0.8535, R2 >= 0.80 until t=1444
+  MEAN over 10 seeds: final R2=0.7641 +/- 0.0652, mean of all R2=0.8848 +/- 0.0370
+  survives to t = 1719 +/- 355; 4/10 never dropped below 0.80; mean curve crosses at t=1780
+  rollout wall time 0.45s for 10 seeds (42 steps each)
+  physics: {'n_truth': 0.24535150825758112, 'n_pred': 0.2586228667470607, 'free_energy_monotone': True, 'L_truth_final': 22.505494505494507, 'L_pred_final': 22.474622770919066}
+  wrote uno_ch_off+0.2_rollout_evaluation.png, uno_ch_off+0.2_phase_ordering_kinetics.png
+
+[tuning] stride schedule for psi0 = +0.4 on 10 validation seed(s) [31337, 24601, 8675309, 20250, 42424, 90210, 23571, 55555, 48151, 62831] (held out of the reported test set)
+[tuning] score = mean R2 at t = 500, 1000, 1500, 2000; a fixed grid, so schedules of different length stay comparable
+[data] ground truth cached: gt_l128_off+0.4_seed31337_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed24601_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed8675309_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed20250_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed42424_t100-2000_ev4.npz
+[data] solving ground truth l=128 off=+0.4 seed=90210 to t=2000 ...
+[data]   -> gt_l128_off+0.4_seed90210_t100-2000_ev4.npz (476, 128, 128) (40s)
+[data] solving ground truth l=128 off=+0.4 seed=23571 to t=2000 ...
+[data]   -> gt_l128_off+0.4_seed23571_t100-2000_ev4.npz (476, 128, 128) (40s)
+[data] solving ground truth l=128 off=+0.4 seed=55555 to t=2000 ...
+[data]   -> gt_l128_off+0.4_seed55555_t100-2000_ev4.npz (476, 128, 128) (40s)
+[data] solving ground truth l=128 off=+0.4 seed=48151 to t=2000 ...
+[data]   -> gt_l128_off+0.4_seed48151_t100-2000_ev4.npz (476, 128, 128) (41s)
+[data] solving ground truth l=128 off=+0.4 seed=62831 to t=2000 ...
+[data]   -> gt_l128_off+0.4_seed62831_t100-2000_ev4.npz (476, 128, 128) (41s)
+    alpha  dt_max  steps     score   R2(500)  R2(1000)  R2(1500)  R2(2000)
+    0.100    30.0     67    0.8549    0.9603    0.9010    0.8162    0.7423
+    0.100    40.0     58    0.8567    0.9601    0.9007    0.8173    0.7487
+    0.100    45.0     55    0.8586    0.9600    0.9013    0.8192    0.7539
+    0.100    50.0     51    0.8602    0.9600    0.9025    0.8209    0.7574
+    0.200    30.0     64    0.8527    0.9606    0.9008    0.8111    0.7385
+    0.200    40.0     52    0.8531    0.9602    0.8992    0.8110    0.7418
+    0.200    45.0     48    0.8538    0.9601    0.8991    0.8114    0.7447
+    0.200    50.0     45    0.8532    0.9598    0.8979    0.8111    0.7440
+    0.350    30.0     63    0.8426    0.9562    0.8905    0.8011    0.7227
+    0.350    40.0     51    0.8426    0.9546    0.8892    0.7994    0.7272
+    0.350    45.0     46    0.8428    0.9541    0.8893    0.7993    0.7286
+    0.350    50.0     42    0.8425    0.9539    0.8885    0.7986    0.7291
+    0.500    30.0     63    0.8426    0.9562    0.8905    0.8011    0.7227
+    0.500    40.0     49    0.8429    0.9541    0.8892    0.8002    0.7280
+    0.500    45.0     47    0.8429    0.9530    0.8882    0.8010    0.7292
+    0.500    50.0     43    0.8420    0.9527    0.8880    0.7991    0.7283
+    0.700    30.0     63    0.8426    0.9562    0.8905    0.8011    0.7227
+    0.700    40.0     49    0.8429    0.9541    0.8892    0.8002    0.7280
+    0.700    45.0     47    0.8429    0.9530    0.8882    0.8010    0.7292
+    0.700    50.0     43    0.8420    0.9527    0.8880    0.7991    0.7283
+  best: alpha=0.1, dt_max=50 (51 steps) -> score 0.8602
+  [warn] dt_max sits at the top of the grid. Longer strides keep winning because they compound the per-step bias fewer times; do not widen the grid beyond the dt_max the model trained on or the step itself becomes an extrapolation.
+  [warn] alpha sits at the bottom of the grid
+
+[rollout] off-critical quench off=+0.4, full horizon t=100 -> 2000
+[data] ground truth cached: gt_l128_off+0.4_seed99999_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed54321_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed77777_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed31415_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed27182_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed61803_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed41421_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed57721_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed66260_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed86420_t100-2000_ev4.npz
+  seed 99999: 51 steps to t=2000, final R2=0.8636, mean R2=0.9401, R2 >= 0.80 until the whole rollout
+  seed 54321: 51 steps to t=2000, final R2=0.7460, mean R2=0.8942, R2 >= 0.80 until t=1548
+  seed 77777: 51 steps to t=2000, final R2=0.8270, mean R2=0.9264, R2 >= 0.80 until the whole rollout
+  seed 31415: 51 steps to t=2000, final R2=0.7527, mean R2=0.8938, R2 >= 0.80 until t=1500
+  seed 27182: 51 steps to t=2000, final R2=0.7545, mean R2=0.8985, R2 >= 0.80 until t=1836
+  seed 61803: 51 steps to t=2000, final R2=0.7777, mean R2=0.9186, R2 >= 0.80 until t=1740
+  seed 41421: 51 steps to t=2000, final R2=0.8186, mean R2=0.9264, R2 >= 0.80 until the whole rollout
+  seed 57721: 51 steps to t=2000, final R2=0.6618, mean R2=0.8944, R2 >= 0.80 until t=1596
+  seed 66260: 51 steps to t=2000, final R2=0.7883, mean R2=0.9102, R2 >= 0.80 until t=1644
+  seed 86420: 51 steps to t=2000, final R2=0.6864, mean R2=0.8896, R2 >= 0.80 until t=1452
+  MEAN over 10 seeds: final R2=0.7677 +/- 0.0619, mean of all R2=0.9092 +/- 0.0177
+  survives to t = 1732 +/- 216; 3/10 never dropped below 0.80; mean curve crosses at t=1740
+  rollout wall time 0.55s for 10 seeds (51 steps each)
+  physics: {'n_truth': 0.3082177797035151, 'n_pred': 0.3065859687676573, 'free_energy_monotone': True, 'L_truth_final': 24.38095238095238, 'L_pred_final': 24.27259259259259}
+  wrote uno_ch_off+0.4_rollout_evaluation.png, uno_ch_off+0.4_phase_ordering_kinetics.png
+
+[summary] all quenches, 10 test seeds, l = 128, t = 100 -> 2000
+    psi0  alpha  dt_max  steps            mean R2           final R2     R2 >= thr to t n never   n_pred
+    -0.4   0.35    50.0     41    0.8662 +-0.0407    0.7295 +-0.0825        1512 +-414    2/10    0.2917
+    -0.2   0.20    50.0     44    0.9007 +-0.0384    0.7967 +-0.0840        1738 +-314    5/10    0.2552
+    +0.0   0.20    50.0     44    0.8920 +-0.0496    0.7375 +-0.1329        1693 +-328    3/10    0.3106
+    +0.2   0.50    50.0     42    0.8848 +-0.0370    0.7641 +-0.0652        1719 +-355    4/10    0.2586
+    +0.4   0.10    50.0     51    0.9092 +-0.0177    0.7677 +-0.0619        1732 +-216    3/10    0.3066
+  best psi0 = +0.4 (mean R2 0.9092), worst psi0 = -0.4 (mean R2 0.8662)
+[data] ground truth cached: gt_l128_off+0.0_seed31337_t100-2000_ev4.npz
+
+[figure] paper-style R2(t), mean over 10 seeds [99999, 54321, 77777, 31415, 27182, 61803, 41421, 57721, 66260, 86420], stride dt = clip(0.1 t, 1, 50)
+  psi0 = -0.4, L = 128: final R2 = 0.7460, mean R2 = 0.8925
+  psi0 = -0.2, L = 128: final R2 = 0.7787, mean R2 = 0.9078
+  psi0 = +0.0, L = 128: final R2 = 0.7254, mean R2 = 0.8986
+  psi0 = +0.2, L = 128: final R2 = 0.7585, mean R2 = 0.9011
+  psi0 = +0.4, L = 128: final R2 = 0.7669, mean R2 = 0.9078
+  psi0 = +0.0, L = 160: final R2 = 0.7563, mean R2 = 0.9108
+  psi0 = +0.0, L = 192: final R2 = 0.7277, mean R2 = 0.9002
+  psi0 = +0.0, L = 256: final R2 = 0.7513, mean R2 = 0.9082
+  wrote uno_ch_r2_sweep.png, uno_ch_r2_sweep.pdf
+
+[diagnostic] 64 -> 128 TRANSFER
+  tile invariance |model(tile) - tile(model)| = 2.096e-07   PASS
+  one-step R^2 at l=128 (training only ever saw t <= 299)
+         t0     dt     UNO R2  persistence      gain
+        100    5.0    0.99997      0.99721  +0.00277
+        100   20.0    0.99879      0.94469  +0.05410
+        100   40.0    0.99646      0.83902  +0.15744
+       1000    5.0    1.00000      0.99997  +0.00003   <- extrapolated in t
+       1000   20.0    0.99996      0.99920  +0.00076   <- extrapolated in t
+       1000   40.0    0.99984      0.99686  +0.00299   <- extrapolated in t
+       1900    5.0    1.00000      0.99999  +0.00001   <- extrapolated in t
+       1900   20.0    0.99997      0.99965  +0.00032   <- extrapolated in t
+       1900   40.0    0.99991      0.99861  +0.00130   <- extrapolated in t
+
+[diagnostic] INTRINSIC PREDICTABILITY (exact solver)
+   rel. perturb    R2(t=500)   R2(t=1000)   R2(t=2000)
+        1.0e-04      1.00000      1.00000      1.00000
+        1.0e-03      1.00000      1.00000      1.00000
+        1.0e-02      0.99993      0.99997      0.99998
+
+[diagnostic] PER-STEP COARSENING BIAS (continuous 'moment' estimator)
+  training data reaches only L ~ 18.8 (t = 299 on the 64-box)
+        t   L_truth   dL_truth   dL_model   bias %  in train range
+      100     13.95     0.8093     0.7169    -11.4  yes
+      150     15.67     0.5438     0.4802    -11.7  yes
+      200     16.95     0.4068     0.3610    -11.3  yes
+      300     18.76     0.3146     0.2792    -11.3  yes
+      400     20.24     0.2784     0.2441    -12.3  NO -- extrapolated
+      600     22.94     0.2594     0.2245    -13.4  NO -- extrapolated
+      800     25.19     0.2019     0.1764    -12.6  NO -- extrapolated
+     1100     27.74     0.1484     0.1247    -16.0  NO -- extrapolated
+     1400     29.98     0.1612     0.1333    -17.3  NO -- extrapolated
+     1700     32.02     0.1125     0.0865    -23.2  NO -- extrapolated
+     1900     33.14     0.1120     0.0841    -24.9  NO -- extrapolated
+  mean bias inside  training L range (4 pts): -11.4 %
+  mean bias outside training L range (7 pts): -17.1 %
+
+[diagnostic] SPEEDUP vs the explicit solver
+  solver: 190,000 explicit steps of dt=0.01 -> 37.9s per trajectory (one at a time, measured on 2000 steps)
+  UNO:    51 autoregressive steps -> 0.396s per trajectory (one at a time)
+                                     0.055s per trajectory (amortised over a batch of 10)
+  speedup 96x like-for-like, 690x batched (3725x fewer steps)
+  quote the like-for-like number: the solver probe is unbatched too. Both compare against the explicit dt=0.01 scheme, not a semi-implicit spectral solver, which would need far fewer steps.
+
+[done] total 1044.9s | 17,901,252 parameters | results -> /iitjhome/m25ph1006/chc_uno_v1/Results
+==============================================================================
+ UNO / Cahn-Hilliard -- PREDICTION   2026-08-25 08:13:44
+==============================================================================
+[setup] NVIDIA A100-SXM4-40GB, 42.4 GB, torch 2.13.0+cu126
+[setup] device=cuda precision=fp32 dtype=torch.float32
+[model] uno_ch_best.pt  17,901,252 parameters  arch={'width': 40, 'modes': 20, 'n_ref': 64, 'levels': 3, 'cond_dim': 64, 'conserve_mass': False}
+[model] training metrics: {'rollout': 0.9262195892333984, 'survives': 1844.0, 'per_seed': [1648.0, 1648.0, 2000.0, 2000.0, 2000.0, 1568.0, 1768.0, 2000.0, 2000.0, 1808.0], 'epoch': 20, 'val1': 0.0007867264218172446}
+[eval] offs=[-0.4, -0.2, 0.0, 0.2, 0.4]  10 test seeds=[99999, 54321, 77777, 31415, 27182, 61803, 41421, 57721, 66260, 86420]
+
+[tuning] stride schedule for psi0 = -0.4 on 10 validation seed(s) [31337, 24601, 8675309, 20250, 42424, 90210, 23571, 55555, 48151, 62831] (held out of the reported test set)
+[tuning] score = mean R2 at t = 500, 1000, 1500, 2000; a fixed grid, so schedules of different length stay comparable
+[data] ground truth cached: gt_l128_off-0.4_seed31337_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed24601_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed8675309_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed20250_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed42424_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed90210_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed23571_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed55555_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed48151_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed62831_t100-2000_ev4.npz
+    alpha  dt_max  steps     score   R2(500)  R2(1000)  R2(1500)  R2(2000)
+    0.100    30.0     67    0.8328    0.9732    0.8985    0.7963    0.6634
+    0.100    40.0     58    0.8370    0.9732    0.8997    0.8011    0.6741
+    0.100    45.0     55    0.8415    0.9732    0.9016    0.8066    0.6847
+    0.100    50.0     51    0.8434    0.9732    0.9025    0.8078    0.6902
+    0.200    30.0     64    0.8290    0.9703    0.8918    0.7880    0.6660
+    0.200    40.0     52    0.8313    0.9705    0.8915    0.7900    0.6731
+    0.200    45.0     48    0.8349    0.9704    0.8931    0.7943    0.6818
+    0.200    50.0     45    0.8347    0.9703    0.8936    0.7927    0.6823
+    0.350    30.0     63    0.8286    0.9694    0.8910    0.7891    0.6648
+    0.350    40.0     51    0.8301    0.9695    0.8901    0.7890    0.6720
+    0.350    45.0     46    0.8341    0.9695    0.8917    0.7929    0.6821
+    0.350    50.0     42    0.8333    0.9688    0.8913    0.7917    0.6813
+    0.500    30.0     63    0.8286    0.9694    0.8910    0.7891    0.6648
+    0.500    40.0     49    0.8302    0.9694    0.8901    0.7885    0.6728
+    0.500    45.0     47    0.8325    0.9687    0.8910    0.7905    0.6797
+    0.500    50.0     43    0.8295    0.9672    0.8892    0.7865    0.6750
+    0.700    30.0     63    0.8286    0.9694    0.8910    0.7891    0.6648
+    0.700    40.0     49    0.8302    0.9694    0.8901    0.7885    0.6728
+    0.700    45.0     47    0.8325    0.9687    0.8910    0.7905    0.6797
+    0.700    50.0     43    0.8295    0.9672    0.8892    0.7865    0.6750
+  best: alpha=0.1, dt_max=50 (51 steps) -> score 0.8434
+  [warn] dt_max sits at the top of the grid. Longer strides keep winning because they compound the per-step bias fewer times; do not widen the grid beyond the dt_max the model trained on or the step itself becomes an extrapolation.
+  [warn] alpha sits at the bottom of the grid
+
+[rollout] off-critical quench off=-0.4, full horizon t=100 -> 2000
+[data] ground truth cached: gt_l128_off-0.4_seed99999_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed54321_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed77777_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed31415_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed27182_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed61803_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed41421_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed57721_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed66260_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.4_seed86420_t100-2000_ev4.npz
+  seed 99999: 51 steps to t=2000, final R2=0.6900, mean R2=0.9081, R2 >= 0.80 until t=1692
+  seed 54321: 51 steps to t=2000, final R2=0.6645, mean R2=0.8832, R2 >= 0.80 until t=1404
+  seed 77777: 51 steps to t=2000, final R2=0.6986, mean R2=0.8734, R2 >= 0.80 until t=1308
+  seed 31415: 51 steps to t=2000, final R2=0.8052, mean R2=0.9387, R2 >= 0.80 until the whole rollout
+  seed 27182: 51 steps to t=2000, final R2=0.6905, mean R2=0.8912, R2 >= 0.80 until t=1644
+  seed 61803: 51 steps to t=2000, final R2=0.8117, mean R2=0.9130, R2 >= 0.80 until the whole rollout
+  seed 41421: 51 steps to t=2000, final R2=0.7234, mean R2=0.9147, R2 >= 0.80 until t=1692
+  seed 57721: 51 steps to t=2000, final R2=0.3922, mean R2=0.7879, R2 >= 0.80 until t=972
+  seed 66260: 51 steps to t=2000, final R2=0.7661, mean R2=0.9216, R2 >= 0.80 until t=1836
+  seed 86420: 51 steps to t=2000, final R2=0.7775, mean R2=0.9395, R2 >= 0.80 until t=1932
+  MEAN over 10 seeds: final R2=0.7020 +/- 0.1205, mean of all R2=0.8971 +/- 0.0441
+  survives to t = 1648 +/- 333; 2/10 never dropped below 0.80; mean curve crosses at t=1644
+  rollout wall time 1.75s for 10 seeds (51 steps each)
+  physics: {'n_truth': 0.26351567379483276, 'n_pred': 0.256136205281693, 'free_energy_monotone': False, 'L_truth_final': 21.90374331550802, 'L_pred_final': 21.70066225165563}
+  wrote uno_ch_off-0.4_rollout_evaluation.png, uno_ch_off-0.4_phase_ordering_kinetics.png
+
+[tuning] stride schedule for psi0 = -0.2 on 10 validation seed(s) [31337, 24601, 8675309, 20250, 42424, 90210, 23571, 55555, 48151, 62831] (held out of the reported test set)
+[tuning] score = mean R2 at t = 500, 1000, 1500, 2000; a fixed grid, so schedules of different length stay comparable
+[data] ground truth cached: gt_l128_off-0.2_seed31337_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed24601_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed8675309_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed20250_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed42424_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed90210_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed23571_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed55555_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed48151_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed62831_t100-2000_ev4.npz
+    alpha  dt_max  steps     score   R2(500)  R2(1000)  R2(1500)  R2(2000)
+    0.100    30.0     67    0.8941    0.9736    0.9304    0.8739    0.7986
+    0.100    40.0     58    0.8965    0.9737    0.9313    0.8758    0.8052
+    0.100    45.0     55    0.8970    0.9737    0.9317    0.8760    0.8067
+    0.100    50.0     51    0.8975    0.9737    0.9321    0.8768    0.8074
+    0.200    30.0     64    0.8921    0.9726    0.9291    0.8707    0.7958
+    0.200    40.0     52    0.8946    0.9725    0.9293    0.8735    0.8031
+    0.200    45.0     48    0.8947    0.9723    0.9288    0.8738    0.8041
+    0.200    50.0     45    0.8952    0.9723    0.9288    0.8738    0.8058
+    0.350    30.0     63    0.8909    0.9720    0.9270    0.8698    0.7948
+    0.350    40.0     51    0.8892    0.9715    0.9282    0.8656    0.7917
+    0.350    45.0     46    0.8918    0.9712    0.9282    0.8683    0.7993
+    0.350    50.0     42    0.8904    0.9709    0.9291    0.8671    0.7943
+    0.500    30.0     63    0.8909    0.9720    0.9270    0.8698    0.7948
+    0.500    40.0     49    0.8893    0.9712    0.9281    0.8654    0.7924
+    0.500    45.0     47    0.8884    0.9709    0.9279    0.8645    0.7903
+    0.500    50.0     43    0.8908    0.9699    0.9293    0.8672    0.7971
+    0.700    30.0     63    0.8909    0.9720    0.9270    0.8698    0.7948
+    0.700    40.0     49    0.8893    0.9712    0.9281    0.8654    0.7924
+    0.700    45.0     47    0.8884    0.9709    0.9279    0.8645    0.7903
+    0.700    50.0     43    0.8908    0.9699    0.9293    0.8672    0.7971
+  best: alpha=0.1, dt_max=50 (51 steps) -> score 0.8975
+  [warn] dt_max sits at the top of the grid. Longer strides keep winning because they compound the per-step bias fewer times; do not widen the grid beyond the dt_max the model trained on or the step itself becomes an extrapolation.
+  [warn] alpha sits at the bottom of the grid
+
+[rollout] off-critical quench off=-0.2, full horizon t=100 -> 2000
+[data] ground truth cached: gt_l128_off-0.2_seed99999_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed54321_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed77777_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed31415_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed27182_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed61803_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed41421_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed57721_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed66260_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off-0.2_seed86420_t100-2000_ev4.npz
+  seed 99999: 51 steps to t=2000, final R2=0.8914, mean R2=0.9592, R2 >= 0.80 until the whole rollout
+  seed 54321: 51 steps to t=2000, final R2=0.8172, mean R2=0.9232, R2 >= 0.80 until the whole rollout
+  seed 77777: 51 steps to t=2000, final R2=0.8095, mean R2=0.9216, R2 >= 0.80 until the whole rollout
+  seed 31415: 51 steps to t=2000, final R2=0.6144, mean R2=0.8436, R2 >= 0.80 until t=1212
+  seed 27182: 51 steps to t=2000, final R2=0.9604, mean R2=0.9732, R2 >= 0.80 until the whole rollout
+  seed 61803: 51 steps to t=2000, final R2=0.9282, mean R2=0.9622, R2 >= 0.80 until the whole rollout
+  seed 41421: 51 steps to t=2000, final R2=0.8715, mean R2=0.9507, R2 >= 0.80 until the whole rollout
+  seed 57721: 51 steps to t=2000, final R2=0.9384, mean R2=0.9659, R2 >= 0.80 until the whole rollout
+  seed 66260: 51 steps to t=2000, final R2=0.8672, mean R2=0.9560, R2 >= 0.80 until the whole rollout
+  seed 86420: 51 steps to t=2000, final R2=0.8631, mean R2=0.9431, R2 >= 0.80 until the whole rollout
+  MEAN over 10 seeds: final R2=0.8561 +/- 0.0981, mean of all R2=0.9399 +/- 0.0379
+  survives to t = 1921 +/- 249; 9/10 never dropped below 0.80; mean curve crosses at never
+  rollout wall time 1.74s for 10 seeds (51 steps each)
+  physics: {'n_truth': 0.2607332744530427, 'n_pred': 0.25829976860359427, 'free_energy_monotone': True, 'L_truth_final': 21.586297760210805, 'L_pred_final': 20.897959183673468}
+  wrote uno_ch_off-0.2_rollout_evaluation.png, uno_ch_off-0.2_phase_ordering_kinetics.png
+
+[tuning] stride schedule for psi0 = +0.0 on 10 validation seed(s) [31337, 24601, 8675309, 20250, 42424, 90210, 23571, 55555, 48151, 62831] (held out of the reported test set)
+[tuning] score = mean R2 at t = 500, 1000, 1500, 2000; a fixed grid, so schedules of different length stay comparable
+[data] ground truth cached: gt_l128_off+0.0_seed31337_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed24601_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed8675309_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed20250_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed42424_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed90210_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed23571_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed55555_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed48151_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed62831_t100-2000_ev4.npz
+    alpha  dt_max  steps     score   R2(500)  R2(1000)  R2(1500)  R2(2000)
+    0.100    30.0     67    0.8894    0.9739    0.9346    0.8686    0.7805
+    0.100    40.0     58    0.8957    0.9741    0.9361    0.8757    0.7967
+    0.100    45.0     55    0.8985    0.9742    0.9369    0.8787    0.8043
+    0.100    50.0     51    0.9013    0.9742    0.9376    0.8818    0.8118
+    0.200    30.0     64    0.8902    0.9739    0.9350    0.8698    0.7820
+    0.200    40.0     52    0.9028    0.9756    0.9417    0.8848    0.8093
+    0.200    45.0     48    0.9058    0.9756    0.9427    0.8883    0.8167
+    0.200    50.0     45    0.9085    0.9757    0.9432    0.8911    0.8240
+    0.350    30.0     63    0.8895    0.9688    0.9329    0.8706    0.7855
+    0.350    40.0     51    0.9023    0.9701    0.9397    0.8860    0.8135
+    0.350    45.0     46    0.8979    0.9679    0.9340    0.8788    0.8110
+    0.350    50.0     42    0.9005    0.9674    0.9345    0.8823    0.8177
+    0.500    30.0     63    0.8895    0.9688    0.9329    0.8706    0.7855
+    0.500    40.0     49    0.8953    0.9678    0.9334    0.8759    0.8040
+    0.500    45.0     47    0.8972    0.9670    0.9335    0.8783    0.8100
+    0.500    50.0     43    0.8912    0.9602    0.9255    0.8713    0.8078
+    0.700    30.0     63    0.8895    0.9688    0.9329    0.8706    0.7855
+    0.700    40.0     49    0.8953    0.9678    0.9334    0.8759    0.8040
+    0.700    45.0     47    0.8972    0.9670    0.9335    0.8783    0.8100
+    0.700    50.0     43    0.8912    0.9602    0.9255    0.8713    0.8078
+  best: alpha=0.2, dt_max=50 (45 steps) -> score 0.9085
+  [warn] dt_max sits at the top of the grid. Longer strides keep winning because they compound the per-step bias fewer times; do not widen the grid beyond the dt_max the model trained on or the step itself becomes an extrapolation.
+
+[rollout] critical quench off=+0.0, full horizon t=100 -> 2000
+[data] ground truth cached: gt_l128_off+0.0_seed99999_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed54321_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed77777_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed31415_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed27182_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed61803_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed41421_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed57721_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed66260_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.0_seed86420_t100-2000_ev4.npz
+  seed 99999: 44 steps to t=2000, final R2=0.9355, mean R2=0.9731, R2 >= 0.80 until the whole rollout
+  seed 54321: 44 steps to t=2000, final R2=0.5391, mean R2=0.8402, R2 >= 0.80 until t=1304
+  seed 77777: 44 steps to t=2000, final R2=0.8294, mean R2=0.9460, R2 >= 0.80 until the whole rollout
+  seed 31415: 44 steps to t=2000, final R2=0.7329, mean R2=0.8873, R2 >= 0.80 until t=1592
+  seed 27182: 44 steps to t=2000, final R2=0.8357, mean R2=0.9404, R2 >= 0.80 until the whole rollout
+  seed 61803: 44 steps to t=2000, final R2=0.8599, mean R2=0.9456, R2 >= 0.80 until the whole rollout
+  seed 41421: 44 steps to t=2000, final R2=0.7924, mean R2=0.9029, R2 >= 0.80 until t=1976
+  seed 57721: 44 steps to t=2000, final R2=0.8327, mean R2=0.9408, R2 >= 0.80 until the whole rollout
+  seed 66260: 44 steps to t=2000, final R2=0.7824, mean R2=0.9041, R2 >= 0.80 until t=1832
+  seed 86420: 44 steps to t=2000, final R2=0.7682, mean R2=0.9141, R2 >= 0.80 until t=1880
+  MEAN over 10 seeds: final R2=0.7908 +/- 0.1045, mean of all R2=0.9194 +/- 0.0380
+  survives to t = 1858 +/- 234; 5/10 never dropped below 0.80; mean curve crosses at t=1976
+  rollout wall time 1.50s for 10 seeds (44 steps each)
+  physics: {'n_truth': 0.3082424187134384, 'n_pred': 0.3111906457281949, 'free_energy_monotone': True, 'L_truth_final': 26.130781499202552, 'L_pred_final': 26.468497576736674}
+  wrote uno_ch_rollout_evaluation.png, uno_ch_phase_ordering_kinetics.png
+
+[tuning] stride schedule for psi0 = +0.2 on 10 validation seed(s) [31337, 24601, 8675309, 20250, 42424, 90210, 23571, 55555, 48151, 62831] (held out of the reported test set)
+[tuning] score = mean R2 at t = 500, 1000, 1500, 2000; a fixed grid, so schedules of different length stay comparable
+[data] ground truth cached: gt_l128_off+0.2_seed31337_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed24601_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed8675309_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed20250_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed42424_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed90210_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed23571_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed55555_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed48151_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed62831_t100-2000_ev4.npz
+    alpha  dt_max  steps     score   R2(500)  R2(1000)  R2(1500)  R2(2000)
+    0.100    30.0     67    0.8715    0.9601    0.9060    0.8429    0.7769
+    0.100    40.0     58    0.8698    0.9602    0.9035    0.8393    0.7764
+    0.100    45.0     55    0.8688    0.9602    0.9027    0.8369    0.7751
+    0.100    50.0     51    0.8700    0.9602    0.9032    0.8388    0.7779
+    0.200    30.0     64    0.8724    0.9631    0.9085    0.8444    0.7736
+    0.200    40.0     52    0.8839    0.9651    0.9157    0.8580    0.7967
+    0.200    45.0     48    0.8828    0.9650    0.9148    0.8559    0.7954
+    0.200    50.0     45    0.8776    0.9651    0.9087    0.8488    0.7879
+    0.350    30.0     63    0.8793    0.9645    0.9136    0.8539    0.7853
+    0.350    40.0     51    0.8761    0.9617    0.9075    0.8486    0.7864
+    0.350    45.0     46    0.8770    0.9617    0.9070    0.8495    0.7896
+    0.350    50.0     42    0.8780    0.9612    0.9070    0.8514    0.7925
+    0.500    30.0     63    0.8793    0.9645    0.9136    0.8539    0.7853
+    0.500    40.0     49    0.8761    0.9615    0.9074    0.8489    0.7866
+    0.500    45.0     47    0.8865    0.9642    0.9153    0.8635    0.8029
+    0.500    50.0     43    0.8870    0.9639    0.9148    0.8644    0.8049
+    0.700    30.0     63    0.8793    0.9645    0.9136    0.8539    0.7853
+    0.700    40.0     49    0.8761    0.9615    0.9074    0.8489    0.7866
+    0.700    45.0     47    0.8865    0.9642    0.9153    0.8635    0.8029
+    0.700    50.0     43    0.8870    0.9639    0.9148    0.8644    0.8049
+  best: alpha=0.5, dt_max=50 (43 steps) -> score 0.8870
+  [warn] dt_max sits at the top of the grid. Longer strides keep winning because they compound the per-step bias fewer times; do not widen the grid beyond the dt_max the model trained on or the step itself becomes an extrapolation.
+
+[rollout] off-critical quench off=+0.2, full horizon t=100 -> 2000
+[data] ground truth cached: gt_l128_off+0.2_seed99999_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed54321_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed77777_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed31415_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed27182_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed61803_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed41421_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed57721_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed66260_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.2_seed86420_t100-2000_ev4.npz
+  seed 99999: 42 steps to t=2000, final R2=0.8091, mean R2=0.9362, R2 >= 0.80 until the whole rollout
+  seed 54321: 42 steps to t=2000, final R2=0.8697, mean R2=0.9263, R2 >= 0.80 until the whole rollout
+  seed 77777: 42 steps to t=2000, final R2=0.8393, mean R2=0.9322, R2 >= 0.80 until the whole rollout
+  seed 31415: 42 steps to t=2000, final R2=0.7664, mean R2=0.9040, R2 >= 0.80 until t=1876
+  seed 27182: 42 steps to t=2000, final R2=0.7829, mean R2=0.9036, R2 >= 0.80 until t=1924
+  seed 61803: 42 steps to t=2000, final R2=0.8292, mean R2=0.9036, R2 >= 0.80 until the whole rollout
+  seed 41421: 42 steps to t=2000, final R2=0.7211, mean R2=0.8431, R2 >= 0.80 until t=1204
+  seed 57721: 42 steps to t=2000, final R2=0.6943, mean R2=0.8354, R2 >= 0.80 until t=1156
+  seed 66260: 42 steps to t=2000, final R2=0.8620, mean R2=0.9302, R2 >= 0.80 until the whole rollout
+  seed 86420: 42 steps to t=2000, final R2=0.8720, mean R2=0.9344, R2 >= 0.80 until the whole rollout
+  MEAN over 10 seeds: final R2=0.8046 +/- 0.0623, mean of all R2=0.9049 +/- 0.0370
+  survives to t = 1816 +/- 338; 6/10 never dropped below 0.80; mean curve crosses at never
+  rollout wall time 1.44s for 10 seeds (42 steps each)
+  physics: {'n_truth': 0.24535150825758112, 'n_pred': 0.25724445174673055, 'free_energy_monotone': True, 'L_truth_final': 22.505494505494507, 'L_pred_final': 22.56749311294766}
+  wrote uno_ch_off+0.2_rollout_evaluation.png, uno_ch_off+0.2_phase_ordering_kinetics.png
+
+[tuning] stride schedule for psi0 = +0.4 on 10 validation seed(s) [31337, 24601, 8675309, 20250, 42424, 90210, 23571, 55555, 48151, 62831] (held out of the reported test set)
+[tuning] score = mean R2 at t = 500, 1000, 1500, 2000; a fixed grid, so schedules of different length stay comparable
+[data] ground truth cached: gt_l128_off+0.4_seed31337_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed24601_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed8675309_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed20250_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed42424_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed90210_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed23571_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed55555_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed48151_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed62831_t100-2000_ev4.npz
+    alpha  dt_max  steps     score   R2(500)  R2(1000)  R2(1500)  R2(2000)
+    0.100    30.0     67    0.8343    0.9680    0.8971    0.7864    0.6857
+    0.100    40.0     58    0.8307    0.9680    0.8946    0.7808    0.6796
+    0.100    45.0     55    0.8306    0.9680    0.8948    0.7801    0.6797
+    0.100    50.0     51    0.8284    0.9680    0.8929    0.7770    0.6757
+    0.200    30.0     64    0.8287    0.9663    0.8924    0.7773    0.6789
+    0.200    40.0     52    0.8230    0.9660    0.8868    0.7694    0.6697
+    0.200    45.0     48    0.8202    0.9659    0.8839    0.7649    0.6660
+    0.200    50.0     45    0.8176    0.9657    0.8816    0.7610    0.6619
+    0.350    30.0     63    0.8211    0.9641    0.8846    0.7675    0.6683
+    0.350    40.0     51    0.8118    0.9598    0.8737    0.7550    0.6587
+    0.350    45.0     46    0.8086    0.9593    0.8707    0.7497    0.6548
+    0.350    50.0     42    0.8058    0.9584    0.8691    0.7473    0.6487
+    0.500    30.0     63    0.8211    0.9641    0.8846    0.7675    0.6683
+    0.500    40.0     49    0.8110    0.9593    0.8727    0.7536    0.6583
+    0.500    45.0     47    0.8087    0.9586    0.8726    0.7501    0.6534
+    0.500    50.0     43    0.8071    0.9573    0.8692    0.7498    0.6518
+    0.700    30.0     63    0.8211    0.9641    0.8846    0.7675    0.6683
+    0.700    40.0     49    0.8110    0.9593    0.8727    0.7536    0.6583
+    0.700    45.0     47    0.8087    0.9586    0.8726    0.7501    0.6534
+    0.700    50.0     43    0.8071    0.9573    0.8692    0.7498    0.6518
+  best: alpha=0.1, dt_max=30 (67 steps) -> score 0.8343
+  [warn] alpha sits at the bottom of the grid
+
+[rollout] off-critical quench off=+0.4, full horizon t=100 -> 2000
+[data] ground truth cached: gt_l128_off+0.4_seed99999_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed54321_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed77777_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed31415_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed27182_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed61803_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed41421_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed57721_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed66260_t100-2000_ev4.npz
+[data] ground truth cached: gt_l128_off+0.4_seed86420_t100-2000_ev4.npz
+  seed 99999: 66 steps to t=2000, final R2=0.7849, mean R2=0.9155, R2 >= 0.80 until t=1716
+  seed 54321: 66 steps to t=2000, final R2=0.5916, mean R2=0.8391, R2 >= 0.80 until t=1140
+  seed 77777: 66 steps to t=2000, final R2=0.7172, mean R2=0.8876, R2 >= 0.80 until t=1588
+  seed 31415: 66 steps to t=2000, final R2=0.6653, mean R2=0.8760, R2 >= 0.80 until t=1396
+  seed 27182: 66 steps to t=2000, final R2=0.6678, mean R2=0.8744, R2 >= 0.80 until t=1620
+  seed 61803: 66 steps to t=2000, final R2=0.7015, mean R2=0.9007, R2 >= 0.80 until t=1620
+  seed 41421: 66 steps to t=2000, final R2=0.6733, mean R2=0.8763, R2 >= 0.80 until t=1428
+  seed 57721: 66 steps to t=2000, final R2=0.5542, mean R2=0.8550, R2 >= 0.80 until t=1428
+  seed 66260: 66 steps to t=2000, final R2=0.6375, mean R2=0.8669, R2 >= 0.80 until t=1396
+  seed 86420: 66 steps to t=2000, final R2=0.6369, mean R2=0.8805, R2 >= 0.80 until t=1492
+  MEAN over 10 seeds: final R2=0.6630 +/- 0.0647, mean of all R2=0.8772 +/- 0.0216
+  survives to t = 1482 +/- 164; 0/10 never dropped below 0.80; mean curve crosses at t=1460
+  rollout wall time 2.27s for 10 seeds (66 steps each)
+  physics: {'n_truth': 0.30965336358040846, 'n_pred': 0.2681699876103746, 'free_energy_monotone': False, 'L_truth_final': 24.38095238095238, 'L_pred_final': 21.416993464052286}
+  wrote uno_ch_off+0.4_rollout_evaluation.png, uno_ch_off+0.4_phase_ordering_kinetics.png
+
+[summary] all quenches, 10 test seeds, l = 128, t = 100 -> 2000
+    psi0  alpha  dt_max  steps            mean R2           final R2     R2 >= thr to t n never   n_pred
+    -0.4   0.10    50.0     51    0.8971 +-0.0441    0.7020 +-0.1205        1648 +-333    2/10    0.2561
+    -0.2   0.10    50.0     51    0.9399 +-0.0379    0.8561 +-0.0981        1921 +-249    9/10    0.2583
+    +0.0   0.20    50.0     44    0.9194 +-0.0380    0.7908 +-0.1045        1858 +-234    5/10    0.3112
+    +0.2   0.50    50.0     42    0.9049 +-0.0370    0.8046 +-0.0623        1816 +-338    6/10    0.2572
+    +0.4   0.10    30.0     66    0.8772 +-0.0216    0.6630 +-0.0647        1482 +-164    0/10    0.2682
+  best psi0 = -0.2 (mean R2 0.9399), worst psi0 = +0.4 (mean R2 0.8772)
+[data] ground truth cached: gt_l128_off+0.0_seed31337_t100-2000_ev4.npz
+
+[figure] paper-style R2(t), mean over 10 seeds [99999, 54321, 77777, 31415, 27182, 61803, 41421, 57721, 66260, 86420], stride dt = clip(0.1 t, 1, 30)
+  psi0 = -0.4, L = 128: final R2 = 0.6842, mean R2 = 0.8825
+  psi0 = -0.2, L = 128: final R2 = 0.8435, mean R2 = 0.9316
+  psi0 = +0.0, L = 128: final R2 = 0.7658, mean R2 = 0.9156
+  psi0 = +0.2, L = 128: final R2 = 0.8086, mean R2 = 0.9185
+  psi0 = +0.4, L = 128: final R2 = 0.6632, mean R2 = 0.8768
+  psi0 = +0.0, L = 160: final R2 = 0.7872, mean R2 = 0.9260
+  psi0 = +0.0, L = 192: final R2 = 0.7680, mean R2 = 0.9168
+  psi0 = +0.0, L = 256: final R2 = 0.7897, mean R2 = 0.9270
+  wrote uno_ch_r2_sweep.png, uno_ch_r2_sweep.pdf
+
+[diagnostic] 64 -> 128 TRANSFER
+  tile invariance |model(tile) - tile(model)| = 1.952e-07   PASS
+  one-step R^2 at l=128 (training only ever saw t <= 299)
+         t0     dt     UNO R2  persistence      gain
+        100    5.0    0.99995      0.99721  +0.00274
+        100   20.0    0.99925      0.94469  +0.05457
+        100   40.0    0.99736      0.83902  +0.15833
+       1000    5.0    1.00000      0.99997  +0.00003   <- extrapolated in t
+       1000   20.0    0.99997      0.99920  +0.00077   <- extrapolated in t
+       1000   40.0    0.99990      0.99686  +0.00304   <- extrapolated in t
+       1900    5.0    1.00000      0.99999  +0.00001   <- extrapolated in t
+       1900   20.0    0.99998      0.99965  +0.00033   <- extrapolated in t
+       1900   40.0    0.99993      0.99861  +0.00133   <- extrapolated in t
+
+[diagnostic] INTRINSIC PREDICTABILITY (exact solver)
+   rel. perturb    R2(t=500)   R2(t=1000)   R2(t=2000)
+        1.0e-04      1.00000      1.00000      1.00000
+        1.0e-03      1.00000      1.00000      1.00000
+        1.0e-02      0.99993      0.99997      0.99998
+
+[diagnostic] PER-STEP COARSENING BIAS (continuous 'moment' estimator)
+  training data reaches only L ~ 18.8 (t = 299 on the 64-box)
+        t   L_truth   dL_truth   dL_model   bias %  in train range
+      100     13.95     0.8093     0.7430     -8.2  yes
+      150     15.67     0.5438     0.4976     -8.5  yes
+      200     16.95     0.4068     0.3741     -8.0  yes
+      300     18.76     0.3146     0.2909     -7.5  yes
+      400     20.24     0.2784     0.2567     -7.8  NO -- extrapolated
+      600     22.94     0.2594     0.2396     -7.6  NO -- extrapolated
+      800     25.19     0.2019     0.1926     -4.6  NO -- extrapolated
+     1100     27.74     0.1484     0.1452     -2.2  NO -- extrapolated
+     1400     29.98     0.1612     0.1594     -1.1  NO -- extrapolated
+     1700     32.02     0.1125     0.1156      2.7  NO -- extrapolated
+     1900     33.14     0.1120     0.1162      3.8  NO -- extrapolated
+  mean bias inside  training L range (4 pts): -8.1 %
+  mean bias outside training L range (7 pts): -2.4 %
+
+[diagnostic] SPEEDUP vs the explicit solver
+  solver: 190,000 explicit steps of dt=0.01 -> 38.7s per trajectory (one at a time, measured on 2000 steps)
+  UNO:    66 autoregressive steps -> 0.687s per trajectory (one at a time)
+                                     0.227s per trajectory (amortised over a batch of 10)
+  speedup 56x like-for-like, 170x batched (2879x fewer steps)
+  quote the like-for-like number: the solver probe is unbatched too. Both compare against the explicit dt=0.01 scheme, not a semi-implicit spectral solver, which would need far fewer steps.
+
+[done] total 398.4s | 17,901,252 parameters | results -> /iitjhome/m25ph1006/chc_uno_v1/Results
